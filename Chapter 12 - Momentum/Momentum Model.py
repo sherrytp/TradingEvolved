@@ -97,7 +97,7 @@ def initialize(context):
     context.last_month = intial_portfolio
     
     # Fetch and store index membership
-    context.index_members = pd.read_csv('/Users/sherrytp/OneDrive/Eonum/ALGOFin/Trading Evolved/data/sp500.csv', index_col=0, parse_dates=[0])
+    context.index_members = pd.read_csv('/Users/sherrytp/OneDrive/Eonum/ALGOFin/TradingEvolved/data/sp500.csv', index_col=0, parse_dates=[0])
     
     #Schedule rebalance monthly.
     schedule_function(

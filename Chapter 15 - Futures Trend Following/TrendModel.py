@@ -3,9 +3,6 @@
 
 # In[2]:
 
-
-get_ipython().run_line_magic('matplotlib', 'inline')
-
 import zipline
 from zipline.api import future_symbol,      set_commission, set_slippage, schedule_function, date_rules,     time_rules, continuous_future, order_target
 from datetime import datetime
@@ -16,12 +13,6 @@ import pandas as pd
 import numpy as np  
 from zipline.finance.commission import PerTrade, PerContract
 from zipline.finance.slippage import VolumeShareSlippage,     FixedSlippage, VolatilityVolumeShare
-
-# These lines are for the dynamic text reporting
-from IPython.display import display
-import ipywidgets as widgets
-out = widgets.HTML()
-display(out)
 
 """
 Model Settings
@@ -123,7 +114,7 @@ def initialize(context):
     ]
     
     agricultural = [
-        'BL',
+        # 'BL',
         '_C',
         'CT',
         'FC',
@@ -177,14 +168,14 @@ def initialize(context):
     # Used to calculate stop points.
     context.highest_in_position = {market: 0 for market in markets} 
     context.lowest_in_position = {market: 0 for market in markets}    
-    
+
     # Schedule the daily trading
     schedule_function(daily_trade, date_rules.every_day(), time_rules.market_close())
     
     # We'll just use this for the progress output
     # during the backtest. Doesn't impact anything.
     context.months = 0    
-    
+
     # Schedule monthly report output
     schedule_function(
         func=report_result,
@@ -204,7 +195,7 @@ def daily_trade(context, data):
         frequency='1d', 
         bar_count=250,
     )
-    
+
     # Calculate trend
     hist['trend'] = hist['close'].ewm(span=fast_ma).mean() > hist['close'].ewm(span=slow_ma).mean()    
     
@@ -307,7 +298,7 @@ def daily_trade(context, data):
     if len(open_pos) > 0:   
         roll_futures(context, data)                
                         
-start = datetime(2001, 1, 1, 8, 15, 12, 0, pytz.UTC)
+start = datetime(2016, 1, 1, 8, 15, 12, 0, pytz.UTC)
 end = datetime(2019, 1, 2, 8, 15, 12, 0, pytz.UTC)
 
 perf = zipline.run_algorithm(
@@ -316,7 +307,7 @@ perf = zipline.run_algorithm(
     analyze=analyze,
     capital_base=starting_portfolio,  
     data_frequency = 'daily', 
-    bundle='rand_fut' ) 
+    bundle='random_futures_data' )
 
 
 # In[7]:
